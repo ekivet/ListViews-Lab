@@ -1,19 +1,22 @@
 package ly.generalassemb.drewmahrt.bookshelf;
 
 import android.content.Context;
+import android.graphics.Color;
+//import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
+//import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
+//import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +24,11 @@ public class MainActivity extends AppCompatActivity {
 
     //TODO: Define your ListView
 
+    ListView listview;
+
     //TODO: Define your Book List
+
+    ArrayList<Book> mBookList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,33 +36,80 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Use helper method to add books to the list
-        mBookList = generateBooks();
+        mBookList = (ArrayList<Book>) generateBooks();
 
         //TODO: Instantiate BaseAdapter
         //Below is a partially complete example for one Adapter
         mBookAdapter = new BaseAdapter() {
             @Override
             public int getCount() {
+
                 return mBookList.size();
             }
 
             @Override
             public Object getItem(int position) {
+
                 return mBookList.get(position);
             }
 
             @Override
             public long getItemId(int position) {
+
                 return position;
             }
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 //TODO: Update the view
+
+                View view = convertView;
+
+                if (view == null) {
+
+                    LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService
+                            (Context.LAYOUT_INFLATER_SERVICE);
+                    view = inflater.inflate(android.R.layout.simple_list_item_2, null);
+                }
+
+                TextView tv1 = (TextView) view.findViewById(android.R.id.text1);
+                TextView tv2 = (TextView) view.findViewById(android.R.id.text2);
+
+                String textOne = "Title: " + mBookList.get(position).getTitle();
+                String textTwo = "Author: " + mBookList.get(position).getAuthor();
+
+                tv1.setText(textOne);
+                tv2.setText(textTwo);
+
+                return view;
+
             }
+
         };
 
+
         //TODO: Set the ListView's adapter
+
+
+        listview.setAdapter(mBookAdapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick (AdapterView<?> parent, View view,int position, long id){
+                TextView tv1 = (TextView) view.findViewById(android.R.id.text1);
+                TextView tv2 = (TextView) view.findViewById(android.R.id.text2);
+
+                tv1.setTextColor(Color.RED);
+                tv2.setTextColor(Color.RED);
+            }
+
+
+
+        });
+
+
+
+
 
     }
 
